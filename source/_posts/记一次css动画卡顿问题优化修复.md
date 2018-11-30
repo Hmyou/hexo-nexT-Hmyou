@@ -67,7 +67,7 @@ __*. 简要说明：__修改前使用的是transition作用在广告图模块的
 |Scripting   |38.9ms   |41.1ms   |小幅增加js处理 |
 |Rendering   |123.6ms  |18.3ms   |大量减少渲染时间 |
 |Painting   |97.9ms   |0.8ms   |大量减少绘制时间 |
-|Other   |71.5ms   |22.5ms   |- |
+|Other   |71.5ms   |22.5ms   |（其他事件例如CPU加载传输位图数据等） |
 |Idle|869.5ms   |1118.5ms   |CPU处理空闲时间（休息时间多所以CPU不累） |
 
 
