@@ -18,7 +18,7 @@ https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/ref
 >以实际例子说明：同一种动画视觉效果，不同的CSS动画实现方式展现出的不同体验
 
 【腾讯视频-爱玩游戏中心】首页广告焦点图，有长短两种随页面滑动而变化的广告图。如图所示为页面滑动动画效果。视觉效果上只是简单的图片透明度与高度的变化，但不恰当的改变会造成滑动卡顿。
-![](https://s1.ax1x.com/2018/12/05/Fl3d6x.gif)
+![](//hmyou.github.io/kmimg/1542074423_3_w349_h599.gif)
 
 ## 二、数据收集工具
 >没有数据支持的话不足以说明卡顿问题得到了优化修复。
@@ -26,26 +26,26 @@ https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/ref
 ### 使用Chrome DevTools
 ### 1. Performance
 在Performance中可以记录下整个动画过程中FPS值、CPU占用过程。在更多的设置中还可以模拟几倍慢速的CPU处理。
-![记录动画过程的操作](http://km.oa.com/files/photos/pictures/201811/1542162495_79_w420_h186.gif)
-![开启模拟慢速CPU处理](http://km.oa.com/files/photos/pictures//20181113//1542098805_22.png)
+![记录动画过程的操作](//hmyou.github.io/kmimg/1542162495_79_w420_h186.gif)
+![开启模拟慢速CPU处理](//hmyou.github.io/kmimg/1542098805_22.png)
 
 ### 2. Rendering
 在渲染分析工具中可以在页面上标注出重绘的部分，页面中绿框所示。
-![gif图在不断重绘](http://km.oa.com/files/photos/pictures//20181114//1542162304_47.png)
+![gif图在不断重绘](//hmyou.github.io/kmimg/1542162304_47.png)
 ## 三、代码优化点
 
 __1. 修改前的动画实现效果：__
 整体页面的高度是靠广告图与其他部分一起撑起来的，通过修改广告图模块的padding值来改变广告图模块高度，进而影响到整体页面的高度，展现出动画。
-![修改前动画演示效果](http://km.oa.com/files/photos/pictures/201811/1542079676_17_w295_h420.gif)
+![修改前动画演示效果](//hmyou.github.io/kmimg/1542079676_17_w295_h420.gif)
 __2. 修改后的动画实现效果：__
 整体页面的高度先保持不变，通过垂直平移广告图与其他部分所在的视觉位置展现出动画，然后再瞬间改变整体页面的高度以保证页面不会有多余留白或部分被遮挡。
-![修改后动画演示效果](http://km.oa.com/files/photos/pictures/201811/1542079712_22_w240_h420.gif)
+![修改后动画演示效果](//hmyou.github.io/kmimg/1542079712_22_w240_h420.gif)
 
 ------------
 
 __*. 简要说明：__修改前使用的是transition作用在广告图模块的padding值上，修改后使用的是transformY作用在整体页面上。js代码部分可参考附件中简化版样例。
-![修改前的CSS，改变广告模块的padding值](http://km.oa.com/files/photos/pictures//20181113//1542077387_10.png)
-![修改后的CSS，整体页面Y轴平移](http://km.oa.com/files/photos/pictures//20181113//1542077634_80.png)
+![修改前的CSS，改变广告模块的padding值](//hmyou.github.io/kmimg/1542077387_10.png)
+![修改后的CSS，整体页面Y轴平移](//hmyou.github.io/kmimg/1542077634_80.png)
 （上图有两处translateY，因为实际情况的其他原因，将广告图与其他模块分离。视觉效果与整体页面一起translateY效果相同）
 
 
@@ -57,8 +57,8 @@ __*. 简要说明：__修改前使用的是transition作用在广告图模块的
 点击长条方块，可以看到所执行的事件，比如在黄色方块上悬浮看到信息：Event(touchstart) 和 Function call等信息，紫色方块上悬浮看到Update Layer Tree等信息，绿色方块上悬浮看到Composite Layers等信息。
 
 通过修改前后的数据记录图片可看到，修改后重排重绘时间大量减少，CPU处理频繁度大量减少。图片最底部的Summary图表中，可看到各事件耗时所占比例。
-![修改前数据记录](http://km.oa.com/files/photos/pictures//20181114//1542163089_95.png)
-![修改后数据记录](http://km.oa.com/files/photos/pictures//20181114//1542163158_20.png)
+![修改前数据记录](//hmyou.github.io/kmimg/1542163089_95.png)
+![修改后数据记录](//hmyou.github.io/kmimg/1542163158_20.png)
 
 同样取1200ms的时间范围
 
@@ -81,14 +81,14 @@ __*. 简要说明：__修改前使用的是transition作用在广告图模块的
 首先了解下重排与重绘，当dom元素的尺寸或内容或位置变化时，影响到自身或周边元素，浏览器会对页面改变模块重新进行计算然后重排，重排必然导致重绘，而例如背景颜色的改变可以只进行重绘过程。
 修改广告图模块的padding值会改变其原有高度，进而改变整个页面的原有高度，接下来浏览器需要不断的在整个页面各个模块为单位进行计算重排重绘，CPU计算范围很大并且改变很频繁，拖慢进程。
 而使用CSS的transform不会改变页面的布局，不会影响到周边其他模块，浏览器无需大范围进行计算重排，主要过程是GPU在不同位置进行绘制显示图像。
-![修改前需要大量的计算重排操作](http://km.oa.com/files/photos/pictures/201811/1542182258_45_w642_h964.jpg)
-![修改后减少重排，动画过程被GPU连贯地操作](http://km.oa.com/files/photos/pictures/201811/1542182629_36_w649_h540.jpg)
+![修改前需要大量的计算重排操作](//hmyou.github.io/kmimg/1542182258_45_w642_h964.jpg)
+![修改后减少重排，动画过程被GPU连贯地操作](//hmyou.github.io/kmimg/1542182629_36_w649_h540.jpg)
 
 ### 3. CSS3动画属性使用推荐度
 比较推荐使用的动画方式，使用**transform、scale、rotation、opacity**。当然，同时需要避免大量滥用。
 
 避免使用改变以下属性来制作动画。这些属性通常会影响到页面布局，影响到周围元素布局，导致浏览器需要大范围计算重排重绘。
-![](http://km.oa.com/files/photos/pictures//20181114//1542164458_24.png)
+![](//hmyou.github.io/kmimg/1542164458_24.png)
 
 少使用以下属性，虽然通常不会影响到页面布局，但是将位图加载到GPU中，这段操作也是相对耗时的。
-![](http://km.oa.com/files/photos/pictures//20181114//1542164490_73.png)
+![](//hmyou.github.io/kmimg/1542164490_73.png)
