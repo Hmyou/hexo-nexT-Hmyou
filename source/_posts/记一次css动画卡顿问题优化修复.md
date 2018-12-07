@@ -18,7 +18,7 @@ https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/ref
 >以实际例子说明：同一种动画视觉效果，不同的CSS动画实现方式展现出的不同体验
 
 【腾讯视频-爱玩游戏中心】首页广告焦点图，有长短两种随页面滑动而变化的广告图。如图所示为页面滑动动画效果。视觉效果上只是简单的图片透明度与高度的变化，但不恰当的改变会造成滑动卡顿。
-![](http://km.oa.com/files/photos/pictures/201811/1542074423_3_w349_h599.gif)
+![](https://s1.ax1x.com/2018/12/05/Fl3d6x.gif)
 
 ## 二、数据收集工具
 >没有数据支持的话不足以说明卡顿问题得到了优化修复。
@@ -68,7 +68,7 @@ __*. 简要说明：__修改前使用的是transition作用在广告图模块的
 |Rendering   |123.6ms  |18.3ms   |大量减少渲染时间 |
 |Painting   |97.9ms   |0.8ms   |大量减少绘制时间 |
 |Other   |71.5ms   |22.5ms   |（其他事件例如CPU加载传输位图数据等） |
-|Idle|869.5ms   |1118.5ms   |CPU处理空闲时间（休息时间多所以CPU不累） |
+|Idle|869.5ms   |1118.5ms   |CPU休息时间增加（此时间增多表明CPU消耗少）|
 
 
 ##五、问题总结
